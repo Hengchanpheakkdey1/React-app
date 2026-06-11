@@ -1,67 +1,110 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+import Navbar from './component/Navbar'
+import Card from './component/Card';
 
 function App() {
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [country, setCountry] = useState("");
+
 
   const [data, setData] = useState([]); // store data of user
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    gender: "",
+    country: "",
+  });
+
+  const [products, setProducts] = useState([]);
+  const handleDelete = (id) => {
+    setProducts(products.filter(product => product.id !== id));
+  };
+
+  console.log(products)
+
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then(res => res.json())
+      .then(data => setProducts(data))
+      .catch(err => console.error("Error fetching products:", err));
+  }, []);
+
+
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target; //another way too write
+    //// const name = e.target.name;
+    // const value = e.target.value;
+    setForm((data) => ({
+      ...data, // copy all fields from form state
+      [name]: value,
+
+    }));
+  };
+
+  const [submitted, setSubmitted] = useState(false); // When the page first loads: false. The card is hidden.
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the page from reloading
     setData({
-      username: username,
-      email: email,
-      password: password,
-      gender: gender,
-      country: country
-    })
+      username: form.username,
+      email: form.email,
+      password: form.password,
+      gender: form.gender,
+      country: form.country
+    });
+    setSubmitted(true); // Update the state is true, so the card will be shown. rerender the component
+
   };
 
   return (
     <>
-      <form className="form" onSubmit={handleSubmit}>
+      <Navbar />
+      <form className="form" onSubmit={handleSubmit}> {/* call handleSubmit to handle the form submission and save the data to the usestate*/}
         <label htmlFor="Username">Username</label>
         <input type="text"
           placeholder="Username"
           id="Username"
-          value={username}
-          onChange={(e) => { setUserName(e.target.value); }} />
+          name="username"
+          value={form.username}
+          onChange={handleChange} /> {/*Whenever the user types in the input, take the text from the input and save it into the field state./*/}
         <label htmlFor="Email">Email</label>
         <input type="email"
           placeholder="Email"
           id="Email"
-          value={email}
-          onChange={(e) => { setEmail(e.target.value); }} />
+          value={form.email}
+          name="email"
+          onChange={handleChange} />
         <label htmlFor="Password">Password</label>
         <input placeholder='Password' type='password'
           id="Password"
-          value={password}
-          onChange={(e) => { setPassword(e.target.value); }} />
+          value={form.password}
+          name="password"
+          onChange={handleChange} />
         <label>Gender</label>
         <div className="gender-group">
           <input type="radio"
             name="gender"
             id="Male"
             value="Male"
-            onChange={(e) => { setGender(e.target.value); }} />
+            onChange={handleChange} />
           <label htmlFor="Male">Male</label>
           <input type="radio"
             name="gender"
             id="Female"
             value="Female"
-            onChange={(e) => { setGender(e.target.value); }} />
+            onChange={handleChange} />
           <label htmlFor="Female">Female</label>
         </div>
         <label htmlFor="Country">Country</label>
         <select
           name="country"
           id="country"
-          value={country}
-          onChange={(e) => { setCountry(e.target.value); }}>
+          value={form.country}
+          onChange={handleChange}>
           <option value="">Select Country</option>
           <option value="Vietnam">Vietnam</option>
           <option value="Cambodia">Cambodia</option>
@@ -70,13 +113,28 @@ function App() {
       </form>
 
 
-      <div> {/* display data of user */}
-        <p>{data.username}</p>
-        <p>{data.email}</p>
-        <p>{data.password}</p>
-        <p>{data.gender}</p>
-        <p>{data.country}</p>
-      </div>
+      {data && submitted && ( // Show the card when the form is submitted.
+        <div className="user-card">
+          <p><span>Username: </span>{data.username}</p>
+          <p><span>Email: </span>{data.email}</p>
+          <p><span>Password: </span>{data.password}</p>
+          <p><span>Gender: </span>{data.gender}</p>
+          <p><span>Country: </span>{data.country}</p>
+        </div>
+
+
+      )}
+      {products.map((product) => (
+        <Card
+          key={product.id}
+          title={product.title}
+          description={product.description}
+          price={product.price}
+          onDelete={() => handleDelete(product.id)}
+        />
+
+
+      ))}
     </>
   )
 }
