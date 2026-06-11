@@ -11,7 +11,7 @@ const Card = ({ title, description, price, onDelete }) => {
             <p className='card-price'>{price}</p>
 
             <button className="card-delete"
-                onClick={() => alert('Delete clicked')}>
+                onClick={onDelete}>
                 Delete
             </button>
         </div>
