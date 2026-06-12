@@ -10,7 +10,7 @@ const Card = ({ title, description, price, onDelete, onView }) => {
       <button className="card-delete" onClick={onDelete}>
         Delete
       </button>
-      <button className="card-delete" onClick={onView}>
+      <button className="card-view" onClick={onView}>
         View Detail
       </button>
     </div>
