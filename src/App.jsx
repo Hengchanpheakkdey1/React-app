@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import Navbar from './component/Navbar'
-import Card from './component/Card';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-
-
   const [data, setData] = useState([]); // store data of user
   const [form, setForm] = useState({
     username: "",
@@ -15,25 +11,6 @@ function App() {
     country: "",
   });
 
-  const [products, setProducts] = useState([]);
-  const handleDelete = (id) => {
-    setProducts(products.filter(product => product.id !== id));
-  };
-
-  console.log(products)
-
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error("Error fetching products:", err));
-  }, []);
-
-
-
-
-
   const handleChange = (e) => {
     const { name, value } = e.target; //another way too write
     //// const name = e.target.name;
@@ -41,7 +18,6 @@ function App() {
     setForm((data) => ({
       ...data, // copy all fields from form state
       [name]: value,
-
     }));
   };
 
@@ -54,49 +30,61 @@ function App() {
       email: form.email,
       password: form.password,
       gender: form.gender,
-      country: form.country
+      country: form.country,
     });
     setSubmitted(true); // Update the state is true, so the card will be shown. rerender the component
-
   };
 
   return (
     <>
-      <Navbar />
-      <form className="form" onSubmit={handleSubmit}> {/* call handleSubmit to handle the form submission and save the data to the usestate*/}
+      <form className="form" onSubmit={handleSubmit}>
+        {" "}
+        {/* call handleSubmit to handle the form submission and save the data to the usestate*/}
         <label htmlFor="Username">Username</label>
-        <input type="text"
+        <input
+          type="text"
           placeholder="Username"
           id="Username"
           name="username"
           value={form.username}
-          onChange={handleChange} /> {/*Whenever the user types in the input, take the text from the input and save it into the field state./*/}
+          onChange={handleChange}
+        />{" "}
+        {/*Whenever the user types in the input, take the text from the input and save it into the field state./*/}
         <label htmlFor="Email">Email</label>
-        <input type="email"
+        <input
+          type="email"
           placeholder="Email"
           id="Email"
           value={form.email}
           name="email"
-          onChange={handleChange} />
+          onChange={handleChange}
+        />
         <label htmlFor="Password">Password</label>
-        <input placeholder='Password' type='password'
+        <input
+          placeholder="Password"
+          type="password"
           id="Password"
           value={form.password}
           name="password"
-          onChange={handleChange} />
+          onChange={handleChange}
+        />
         <label>Gender</label>
         <div className="gender-group">
-          <input type="radio"
+          <input
+            type="radio"
             name="gender"
             id="Male"
             value="Male"
-            onChange={handleChange} />
+            onChange={handleChange}
+          />
           <label htmlFor="Male">Male</label>
-          <input type="radio"
+          <input
+            type="radio"
             name="gender"
             id="Female"
             value="Female"
-            onChange={handleChange} />
+            onChange={handleChange}
+          />
           <label htmlFor="Female">Female</label>
         </div>
         <label htmlFor="Country">Country</label>
@@ -104,7 +92,8 @@ function App() {
           name="country"
           id="country"
           value={form.country}
-          onChange={handleChange}>
+          onChange={handleChange}
+        >
           <option value="">Select Country</option>
           <option value="Vietnam">Vietnam</option>
           <option value="Cambodia">Cambodia</option>
@@ -112,31 +101,33 @@ function App() {
         <button type="submit">Submit</button>
       </form>
 
-
-      {data && submitted && ( // Show the card when the form is submitted.
-        <div className="user-card">
-          <p><span>Username: </span>{data.username}</p>
-          <p><span>Email: </span>{data.email}</p>
-          <p><span>Password: </span>{data.password}</p>
-          <p><span>Gender: </span>{data.gender}</p>
-          <p><span>Country: </span>{data.country}</p>
-        </div>
-
-
-      )}
-      {products.map((product) => (
-        <Card
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          price={product.price}
-          onDelete={() => handleDelete(product.id)}
-        />
-
-
-      ))}
+      {data &&
+        submitted && ( // Show the card when the form is submitted.
+          <div className="user-card">
+            <p>
+              <span>Username: </span>
+              {data.username}
+            </p>
+            <p>
+              <span>Email: </span>
+              {data.email}
+            </p>
+            <p>
+              <span>Password: </span>
+              {data.password}
+            </p>
+            <p>
+              <span>Gender: </span>
+              {data.gender}
+            </p>
+            <p>
+              <span>Country: </span>
+              {data.country}
+            </p>
+          </div>
+        )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
