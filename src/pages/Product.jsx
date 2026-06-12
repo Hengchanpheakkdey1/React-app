@@ -5,52 +5,51 @@ import { useNavigate } from "react-router";
 export default function Product() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const getProduct = async () => {
+    const fetchProducts = async () => {
+      try {
         const response = await fetch("https://fakestoreapi.com/products");
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data);
-          setLoading(false);
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
         }
-      };
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      getProduct();
-    } catch (error) {
-      console.log(error);
-    }
+    fetchProducts();
   }, []);
 
   const handleDelete = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
+    setProducts((prev) => prev.filter((product) => product.id !== id));
   };
 
-  const handleOnView = (id) => {
-    console.log(id);
+  const handleView = (id) => {
     navigate(`/product/${id}`);
   };
 
+  if (loading) return <h4>Loading...</h4>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div>
-      {loading && <h4>Loading .........</h4>}
-      {!loading && (
-        <>
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              onDelete={() => handleDelete(product.id)}
-              onView={() => handleOnView(product.id)}
-            />
-          ))}
-        </>
-      )}
+      {products.map((product) => (
+        <Card
+          key={product.id}
+          title={product.title}
+          description={product.description}
+          price={product.price}
+          onDelete={() => handleDelete(product.id)}
+          onView={() => handleView(product.id)}
+        />
+      ))}
     </div>
   );
 }
