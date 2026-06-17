@@ -1,0 +1,116 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 440px;
+    margin: 48px auto;
+    padding: 36px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+.form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+}
+
+.form input,
+.form select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #222;
+    background: #f9fafb;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.form input:focus,
+.form select:focus {
+    border-color: #2563eb;
+    background: #fff;
+}
+
+.gender-group {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding: 10px 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.gender-group label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #444;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.gender-group input[type="radio"] {
+    width: auto;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.form button {
+    padding: 12px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.2s;
+}
+
+.form button:hover {
+    background: #1d4ed8;
+}
+
+.user-card {
+    max-width: 440px;
+    margin: 0 auto 48px;
+    padding: 24px 28px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.user-card p:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.user-card p span {
+    font-weight: 600;
+    color: #222;
+    margin-right: 8px;
+}
